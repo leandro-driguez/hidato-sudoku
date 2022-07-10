@@ -26,6 +26,7 @@ source-repository head
 library
   exposed-modules:
       Generator.Direction
+      Generator.HamiltonianPath
       Generator.Hidato
       Tester
   other-modules:

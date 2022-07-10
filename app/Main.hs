@@ -1,7 +1,8 @@
 module Main where
 
-import HidatoSudokuLib ( someFunc )
 import Prelude
+import Tester
 
 main :: IO ()
-main = someFunc
+main = putStrLn "Hello, Haskell!"
+

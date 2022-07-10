@@ -1,9 +1,5 @@
-module HidatoSudokuLib
-    ( someFunc
-    ) where
-
-someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+module Tester
+    () where
 
 data Direction = Up | UpperRightDiagonal | 
                  Right' | LowerRightDiagonal | 
@@ -35,41 +31,45 @@ directionToCol direction = case direction of
     Left' -> -1
     UpperLeftDiagonal -> -1
 
-data Hidato = Hidato { matrix :: [[Int]], mask :: [[Bool]], freeCells :: Int } deriving (Show, Eq)
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+data Hidato = Hidato { 
+    matrix :: [[Int]], 
+    mask :: [[Bool]], 
+    freeCells :: Int, 
+    amountRows :: Int, 
+    amountCols :: Int 
+} deriving (Show, Eq)
+
+
 data Tree = BinaryTree { value :: Int, left :: Tree, right :: Tree } | Leaf Int deriving (Show, Eq)
 
 
-searchHamiltonianPath :: Hidato -> [(Int, Int)]
-searchHamiltonianPath hidato = searchHamiltonianPath' (matrix hidato) (mask hidato) (freeCells hidato)
-
-
-searchHamiltonianPath' :: [[Int]] -> [[Bool]] -> Int -> [(Int, Int)]
-searchHamiltonianPath' matrix mask freeCells = searchHamiltonianPath'' matrix mask freeCells (10,10) 0 0 Up [] 0 
-
-
-searchHamiltonianPath'' :: [[Int]] -> [[Bool]] -> Int -> (Int,Int) -> Int -> Int -> Direction -> [(Int, Int)] -> Int -> [(Int, Int)]
-searchHamiltonianPath'' matrix mask freeCells (amountRows, amountCols) row col direction path sizePath
-    | isValidPosition' && freeCells == 1 = newPath 
-    | isValidPosition' && newHamiltonianPath /= [] = newHamiltonianPath 
-    | isValidPosition' && direction /= UpperLeftDiagonal = 
-        searchHamiltonianPath'' matrix mask freeCells (amountRows, amountCols) row col (succ direction) path sizePath
-    | otherwise = []
-    where 
-        newHamiltonianPath = searchHamiltonianPath'' newMatrix mask (freeCells - 1) (amountRows, amountCols) newRow newCol Up newPath newSizePath
-        isValidPosition' = isValidPosition matrix mask (amountRows, amountCols) row col
-        newRow = row + directionToRow direction
-        newCol = col + directionToCol direction
-        newPath = (row, col) : path
-        newMatrix = replaceMatrix matrix row col newSizePath
-        newSizePath = sizePath + 1
-
-
-isValidPosition :: [[Int]] -> [[Bool]] -> (Int, Int) -> Int -> Int -> Bool
-isValidPosition matrix mask (amountRows, amountCols) row col = 
-    row < amountRows && col < amountCols
+isValidPosition :: Hidato -> Int -> Int -> Bool
+isValidPosition hidato row col = 
+    row < amountRows' && col < amountCols'
     && row >= 0 && col >= 0 
-    && matrix !! row !! col == 0
-    && mask !! row !! col
+    && matrix' !! row !! col == 0
+    && mask' !! row !! col
+    where matrix' = matrix hidato
+          mask' = mask hidato
+          amountRows' = amountRows hidato
+          amountCols' = amountCols hidato   
+
+
+replaceHidato :: Hidato -> Int -> Int -> Int-> Hidato
+replaceHidato hidato row col value = Hidato {
+        matrix = replaceMatrix (matrix hidato) row col value,
+        mask = mask hidato,
+        freeCells = freeCells hidato - 1,
+        amountRows = amountRows hidato,
+        amountCols = amountRows hidato
+    } 
 
 
 replace :: [a] -> Int -> a -> [a]
@@ -81,4 +81,41 @@ replaceMatrix :: [[a]] -> Int -> Int -> a -> [[a]]
 replaceMatrix matrix row col value = 
     let newRow = replace (matrix !! row) col value 
     in replace matrix row newRow
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+searchHamiltonianPath :: Hidato -> [(Int, Int)]
+searchHamiltonianPath hidato = searchHamiltonianPath' hidato 0 0 Up [] 0
+
+
+searchHamiltonianPath' :: Hidato -> Int -> Int -> Direction -> [(Int, Int)] -> Int -> [(Int, Int)]
+searchHamiltonianPath' hidato row col direction path sizePath
+    | isValidPosition' && freeCells' == 1 = newPath 
+    | isValidPosition' && newHamiltonianPath /= [] = newHamiltonianPath 
+    | isValidPosition' && direction /= UpperLeftDiagonal = 
+        searchHamiltonianPath' hidato row col (succ direction) path sizePath
+    | otherwise = []
+    where 
+        newHamiltonianPath = searchHamiltonianPath' newHidato newRow newCol Up newPath newSizePath
+        isValidPosition' = isValidPosition hidato row col
+        newRow = row + directionToRow direction
+        newCol = col + directionToCol direction
+        newPath = (row, col) : path
+        newMatrix = replaceMatrix matrix' row col newSizePath
+        newSizePath = sizePath + 1
+        newHidato = Hidato {
+            matrix = newMatrix,
+            mask = mask',
+            freeCells = freeCells' - 1,
+            amountRows = amountRows',
+            amountCols = amountCols'
+        }
+        matrix' = matrix hidato
+        mask' = mask hidato
+        freeCells' = freeCells hidato
+        amountRows' = amountRows hidato
+        amountCols' = amountCols hidato
 
