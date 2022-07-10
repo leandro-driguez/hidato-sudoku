@@ -25,7 +25,9 @@ source-repository head
 
 library
   exposed-modules:
-      Lib
+      Generator.Direction
+      Generator.Hidato
+      Tester
   other-modules:
       Paths_hidato_sudoku
   hs-source-dirs:

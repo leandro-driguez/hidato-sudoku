@@ -1,6 +1,7 @@
 module Main where
 
-import Lib
+import HidatoSudokuLib ( someFunc )
+import Prelude
 
 main :: IO ()
 main = someFunc
