@@ -16,7 +16,9 @@ instance Show ShowHidatos where
 
 solveTemplate :: String -> IO ShowHidatos
 solveTemplate templateName = do
+    
     template <- readFile (rootPath ++ "/templates/" ++ templateName ++ ".txt")
+    
     let rows = splitOn "\n" template
         colums = map (splitOn " ") rows
         mask' = map (map (/= "X")) colums

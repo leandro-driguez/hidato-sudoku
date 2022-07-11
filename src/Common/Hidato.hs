@@ -10,12 +10,12 @@ import Common.Direction (Direction(..), directionToCol, directionToRow)
 
 
 data Hidato = Hidato { 
-    matrix :: [[Int]], 
-    mask :: [[Bool]], 
-    freeCells :: Int, 
-    amountRows :: Int, 
-    amountCols :: Int 
-} | Nil deriving (Eq)
+            matrix :: [[Int]], 
+            mask :: [[Bool]], 
+            freeCells :: Int, 
+            amountRows :: Int, 
+            amountCols :: Int 
+        } | Nil deriving (Eq)
 
 instance Show Hidato where
     show (Hidato matrix mask _ _ _) = 
