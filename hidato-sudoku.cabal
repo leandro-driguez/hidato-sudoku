@@ -27,9 +27,12 @@ library
   exposed-modules:
       Common.Direction
       Common.Hidato
+      Common.Utils
+      Generator.FindUniqueSolution
       Generator.Generate
       Generator.HamiltonianPath
       Generator.Random
+      Solver.Main
       Solver.Solve
   other-modules:
       Paths_hidato_sudoku
@@ -38,6 +41,7 @@ library
   build-depends:
       base >=4.7 && <5
     , random
+    , split
   default-language: Haskell2010
 
 executable hidato-sudoku-exe
@@ -51,6 +55,7 @@ executable hidato-sudoku-exe
       base >=4.7 && <5
     , hidato-sudoku
     , random
+    , split
   default-language: Haskell2010
 
 test-suite hidato-sudoku-test
@@ -65,4 +70,5 @@ test-suite hidato-sudoku-test
       base >=4.7 && <5
     , hidato-sudoku
     , random
+    , split
   default-language: Haskell2010

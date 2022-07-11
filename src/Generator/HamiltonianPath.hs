@@ -6,29 +6,17 @@ import Common.Hidato
 import Common.Direction
 import Generator.Random
 
-searchHamiltonianPath :: Hidato -> IO Hidato
-searchHamiltonianPath hidato = do 
-    randRow <- drawInt 0 (amountRows hidato - 1)
-    randCol <- drawInt 0 (amountCols hidato - 1)
-    let solvedHidato = searchHamiltonianPath' hidato randRow randCol Up 0
-    if solvedHidato == Nil
-        then do searchHamiltonianPath hidato
-        else do 
-            -- get some cells
-            return solvedHidato
-
-
-searchHamiltonianPath' :: Hidato -> Int -> Int -> Direction -> Int -> Hidato
-searchHamiltonianPath' hidato row col direction sizePath
+searchHamiltonianPath :: Hidato -> Int -> Int -> Direction -> Int -> Hidato
+searchHamiltonianPath hidato row col direction sizePath
     | isValidPosition' && freeCells' == 1 = newHidato
     | isValidPosition' && (checkingRow, checkingCol) /= (-1,-1) = 
-        searchHamiltonianPath' newHidato checkingRow checkingCol Up newSizePath
+        searchHamiltonianPath newHidato checkingRow checkingCol Up newSizePath
     | isValidPosition' && newHamiltonianPath /= Nil = newHamiltonianPath 
     | isValidPosition' && direction /= UpperLeftDiagonal = 
-        searchHamiltonianPath' hidato row col (succ direction) sizePath
+        searchHamiltonianPath hidato row col (succ direction) sizePath
     | otherwise = Nil
     where 
-        newHamiltonianPath = searchHamiltonianPath' newHidato newRow newCol Up newSizePath
+        newHamiltonianPath = searchHamiltonianPath newHidato newRow newCol Up newSizePath
         isValidPosition' = isValidPosition hidato row col sizePath
         newRow = row + directionToRow direction
         newCol = col + directionToCol direction

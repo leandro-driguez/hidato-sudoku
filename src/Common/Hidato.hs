@@ -15,7 +15,12 @@ data Hidato = Hidato {
     freeCells :: Int, 
     amountRows :: Int, 
     amountCols :: Int 
-} | Nil deriving (Show, Eq)
+} | Nil deriving (Eq)
+
+instance Show Hidato where
+    show (Hidato matrix mask _ _ _) = 
+        let showedHidato = show matrix
+        in showedHidato ++ "\n" 
 
 
 isValidPosition :: Hidato -> Int -> Int -> Int -> Bool
