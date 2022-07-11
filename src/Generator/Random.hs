@@ -1,4 +1,4 @@
-module Common.Random(drawInt) where
+module Generator.Random(drawInt) where
 
 import System.Random
 

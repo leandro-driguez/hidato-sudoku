@@ -26,9 +26,11 @@ source-repository head
 library
   exposed-modules:
       Common.Direction
-      Common.HamiltonianPath
       Common.Hidato
-      Common.Random
+      Generator.Generate
+      Generator.HamiltonianPath
+      Generator.Random
+      Solver.Solve
       Tester
   other-modules:
       Paths_hidato_sudoku

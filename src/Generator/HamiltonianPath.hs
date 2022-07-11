@@ -1,4 +1,4 @@
-module Common.HamiltonianPath
+module Generator.HamiltonianPath
     (searchHamiltonianPath)
     where
 
@@ -16,7 +16,7 @@ import Common.Direction
         Direction(..) 
     )
 
-import Common.Random(drawInt)
+import Generator.Random(drawInt)
 
 
 searchHamiltonianPath :: Hidato -> IO Hidato

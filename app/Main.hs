@@ -1,6 +1,6 @@
 module Main where
 
-import Common.HamiltonianPath
+import Generator.HamiltonianPath
 
 
 main :: IO ()
