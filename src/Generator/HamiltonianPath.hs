@@ -3,21 +3,8 @@ module Generator.HamiltonianPath
     where
 
 import Common.Hidato
-    ( 
-        Hidato(..), 
-        replaceHidato, 
-        isValidPosition
-    )
-
 import Common.Direction
-    (
-        directionToCol,
-        directionToRow,
-        Direction(..) 
-    )
-
-import Generator.Random(drawInt)
-
+import Generator.Random
 
 searchHamiltonianPath :: Hidato -> IO Hidato
 searchHamiltonianPath hidato = do 

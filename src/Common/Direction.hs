@@ -19,7 +19,7 @@ directionToRow direction = case direction of
   Right' -> 0
   LowerRightDiagonal -> 1
   Down -> 1
-  LowerLeftDiagonal -> -1
+  LowerLeftDiagonal -> 1
   Left' -> 0
   UpperLeftDiagonal -> -1
 
@@ -31,6 +31,6 @@ directionToCol direction = case direction of
     Right' -> 1
     LowerRightDiagonal -> 1
     Down -> 0
-    LowerLeftDiagonal -> 1
+    LowerLeftDiagonal -> -1
     Left' -> -1
     UpperLeftDiagonal -> -1

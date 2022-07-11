@@ -31,7 +31,6 @@ library
       Generator.HamiltonianPath
       Generator.Random
       Solver.Solve
-      Tester
   other-modules:
       Paths_hidato_sudoku
   hs-source-dirs:

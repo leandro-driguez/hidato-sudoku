@@ -1,6 +1,6 @@
 module Common.Hidato
     ( 
-        Hidato(..),
+        Hidato(Hidato, Nil, matrix, mask, freeCells, amountRows, amountCols),
         isValidPosition,
         replaceHidato
     ) where
@@ -49,4 +49,3 @@ replaceMatrix :: [[a]] -> Int -> Int -> a -> [[a]]
 replaceMatrix matrix row col value = 
     let newRow = replace (matrix !! row) col value 
     in replace matrix row newRow
-    
