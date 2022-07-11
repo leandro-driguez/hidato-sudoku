@@ -1,12 +1,12 @@
-module Generator.Hidato
-    ( --matrix, mask, freeCells, amountRows, amountCols
+module Common.Hidato
+    ( 
         Hidato(..),
         isValidPosition,
         replaceHidato
     ) where
 
 
-import Generator.Direction (Direction(..), directionToCol, directionToRow)
+import Common.Direction (Direction(..), directionToCol, directionToRow)
 
 
 data Hidato = Hidato { 
@@ -15,17 +15,14 @@ data Hidato = Hidato {
     freeCells :: Int, 
     amountRows :: Int, 
     amountCols :: Int 
-} deriving (Show, Eq)
+} | Nil deriving (Show, Eq)
 
 
-data Tree = BinaryTree { value :: Int, left :: Tree, right :: Tree } | Leaf Int deriving (Show, Eq)
-
-
-isValidPosition :: Hidato -> Int -> Int -> Bool
-isValidPosition hidato row col = 
+isValidPosition :: Hidato -> Int -> Int -> Int -> Bool
+isValidPosition hidato row col lastStep = 
     row < amountRows' && col < amountCols'
     && row >= 0 && col >= 0 
-    && matrix' !! row !! col == 0
+    && (matrix' !! row !! col == 0 || matrix' !! row !! col == lastStep + 1) 
     && mask' !! row !! col
     where matrix' = matrix hidato
           mask' = mask hidato
@@ -52,3 +49,4 @@ replaceMatrix :: [[a]] -> Int -> Int -> a -> [[a]]
 replaceMatrix matrix row col value = 
     let newRow = replace (matrix !! row) col value 
     in replace matrix row newRow
+    

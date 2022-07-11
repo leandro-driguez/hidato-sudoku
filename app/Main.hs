@@ -1,8 +1,7 @@
 module Main where
 
-import Prelude
-import Tester
+import Common.HamiltonianPath
+
 
 main :: IO ()
 main = putStrLn "Hello, Haskell!"
-

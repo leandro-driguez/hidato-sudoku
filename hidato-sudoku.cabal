@@ -25,9 +25,10 @@ source-repository head
 
 library
   exposed-modules:
-      Generator.Direction
-      Generator.HamiltonianPath
-      Generator.Hidato
+      Common.Direction
+      Common.HamiltonianPath
+      Common.Hidato
+      Common.Random
       Tester
   other-modules:
       Paths_hidato_sudoku
@@ -35,6 +36,7 @@ library
       src
   build-depends:
       base >=4.7 && <5
+    , random
   default-language: Haskell2010
 
 executable hidato-sudoku-exe
@@ -47,6 +49,7 @@ executable hidato-sudoku-exe
   build-depends:
       base >=4.7 && <5
     , hidato-sudoku
+    , random
   default-language: Haskell2010
 
 test-suite hidato-sudoku-test
@@ -60,4 +63,5 @@ test-suite hidato-sudoku-test
   build-depends:
       base >=4.7 && <5
     , hidato-sudoku
+    , random
   default-language: Haskell2010

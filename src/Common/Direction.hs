@@ -1,4 +1,4 @@
-module Generator.Direction
+module Common.Direction
     ( 
         Direction(..),
         directionToRow,
