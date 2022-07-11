@@ -1,12 +1,9 @@
-module Solver.Main(solveTemplate) where
+module Solver.Main(solveTemplate, ShowHidatos) where
 
 import Data.List.Split
 import Common.Hidato 
 import Generator.Generate
 import Solver.Solve
-
-rootPath :: String
-rootPath = "/home/leandro/Study/3rd_Year/1st_semester/Declarative_Programming/Haskell/hidato-sudoku"
 
 
 data ShowHidatos = ShowHidatos { generatedHidato :: Hidato, solvedHidato :: Hidato }
@@ -14,8 +11,9 @@ data ShowHidatos = ShowHidatos { generatedHidato :: Hidato, solvedHidato :: Hida
 instance Show ShowHidatos where
     show (ShowHidatos g s) = "\n" ++ "Generated Hidato:" ++ show g ++ "\n" ++ "Solved Hidato:" ++ show s
 
-solveTemplate :: String -> IO ShowHidatos
-solveTemplate templateName = do
+
+solveTemplate :: String -> FilePath -> IO ShowHidatos
+solveTemplate templateName rootPath = do
     
     template <- readFile (rootPath ++ "/templates/" ++ templateName ++ ".txt")
     

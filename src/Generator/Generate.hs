@@ -8,8 +8,8 @@ import Generator.Random
 
 generateHidato :: Hidato -> IO Hidato
 generateHidato hidato = do 
-    randRow <- drawInt 0 (amountRows hidato - 1)
-    randCol <- drawInt 0 (amountCols hidato - 1)
+    randRow <- getRandom 0 (amountRows hidato - 1)
+    randCol <- getRandom 0 (amountCols hidato - 1)
     let solvedHidato = searchHamiltonianPath hidato randRow randCol Up 0
     if solvedHidato == Nil
         then do generateHidato hidato

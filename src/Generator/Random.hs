@@ -1,16 +1,16 @@
-module Generator.Random(drawInt) where
+module Generator.Random(getRandom) where
 
 import System.Random
 
-drawInt :: Int -> Int -> IO Int
-drawInt x y = getStdRandom $ randomR (x,y)
+getRandom :: Int -> Int -> IO Int
+getRandom x y = getStdRandom $ randomR (x,y)
 
 -- drawDouble :: Double -> Double -> IO Double
 -- drawDouble x y = getStdRandom (randomR (x,y))
 
 -- handler :: Int -> Int -> IO ()
 -- handler min max = do
---     int <- drawInt min max 
+--     int <- getRandom min max 
 --     let out = useInt int
 --     writeFile ".seed" (show out) 
 
