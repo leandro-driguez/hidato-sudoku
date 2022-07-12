@@ -1,0 +1,133 @@
+\documentclass[10pt]{amsart}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[spanish]{babel}
+\usepackage{blindtext}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{stmaryrd}
+\usepackage{calrsfs}
+\usepackage{fancyhdr}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{stmaryrd}
+\usepackage{lipsum}
+
+\voffset=-1.4mm
+\oddsidemargin=14pt
+\evensidemargin=14pt
+\topmargin=26pt
+\headheight=9pt     
+\textheight=576pt
+\textwidth=441pt %441
+\parskip=0pt plus 4pt
+
+\pagestyle{headings}
+\title{Proyecto de Programaci\'on Funcional en Haskell}
+\author{Programaci\'on Declarativa}
+\date{\today}
+
+
+\begin{document}
+	\begin{titlepage}
+		\clearpage
+		\maketitle
+		
+		\vspace{3em}
+		\begin{center}
+			Tema: \textbf{Generador y solucionador de hidatos sudoku} 	
+
+                \vspace{6em}
+                \begin{center}
+        		\includegraphics[width=6cm]{haskell.png}
+        	\end{center}
+
+			\vspace{6em}
+			Autores: \\
+			Leandro Rodríguez Llosa \\
+			Andry Rosquet Rodríguez
+		\end{center}
+		\thispagestyle{empty}
+	\end{titlepage}
+
+        \normalsize
+ 
+	\small
+	
+        \section*{Iniciador}
+	,..................Leo aqui pon el iniciador de todo o sea el main o algo asi.................. 
+	\section*{ ¿C\'omo se genera el sudoku?}
+	
+        \subsection*{Acercamiento general}
+	Para la construcci\'on de un tablero con \'unica soluci\'on primero es necesario establecer las dimensiones de este, junto a su forma y adem\'as fijar 1 y el valor del n\'umero m\'as alto posible de dicho tablero. Lo anterior crear\'a a la par otra matriz con iguales dimensiones que brinda la informaci\'on correspondiente a las posiciones donde es posible ubicar alg\'un valor del sudoku (True) y con False las que no son v\'alidas,a esta matriz se le denomin\'o mask. Luego se busca una soluci\'on de este tablero, casi vac\'io, y teni\'endolo resuelto se procede a analizar qué valores son obligatorios en la posici\'on que se encuentran y los que son prescindibles. Al finalizar el proceso anterior tendr\'iamos un tablero con soluci\'on \'unica.
+	
+        \subsection*{M\'etodos y estrategias}
+	El m\'etodo que establece la forma del tablero inicial es ..... Escribe aqui leo con lo que estabas haciendo tu de generar el tablero inicail con random y el tema...........................
+	Luego teniendo el tablero con una soluci\'on v\'alida, se procede a utilizar la funci\'on:
+	\textit{findUniqueSolution} la cual utiliza dicho sudoku ([[a]]) y su mask([[Bool]]) para encontrar un nuevo tablero con espacios vac\'ios que tenga soluci\'on \'unica([[a]]). Dicho m\'etodo busca informaci\'on necesaria y termina llamando la funci\'on \textit{iteration} la cual l\'ogicamente "itera" del 2 al m\'aximo posible del tablero, procediendo a realizarle un an\'alisis a cada uno en relaci\'on con su ubicaci\'on en el sudoku resuelto. ¿En qu\'e consiste dicho an\'alisis?, se procede a remover dicho n\'umero del tablero y se hace un llamado a la funci\'on:
+	 \textit{solveNumber} que recibe la matriz de n\'umeros actualizada ([[a]]) y su mask ([[Bool]]), devuelviendo el n\'umero de soluciones factibles de ese sudoku. Esto conllevar\'ia a dos posibles resultados que son explicados a continuaci\'on y se analizan en la funci\'on \textit{iteration}, la cual se decribir\'a a fondo m\'as adelante:
+	 Si el resultado es 1 se elimina dicho valor de manera definitiva porque significa que dicho d\'igito siempre, necesariamente, va a ser ubicado en esta posici\'on.
+	 Si el resultado es mayor que 1 esto implica que dicho d\'igito debe estar ubicado obligatoriamente en el tablero resultante, de lo contrario si no estuviese fijado generar\'ia m\'ultiples posibles soluciones.
+	 Cuando se realiz\'o dicho an\'alisis a cada valor, se obtendr\'ia el tablero con soluci\'on \'unica donde estar\'an n\'umeros fijados si son necesarios y espacios disponible que solo brindar\'ian soluci\'on v\'alida si se ubican los n\'umeros requeridos.
+	 Las funciones anteriores se auxilian de otros m\'etodos para funcionar:
+	 
+    \begin{itemize}
+        \item \textit{iteration} recibe un entero x, el m\'aximo, la posici\'on de x en el sudoku resuelto, el tablero y su mask. Se encarga de iterar de ese x hasta el m\'aximo, analizando que ocurre si se elimina x del tablero para finalmente devolver el tablero con soluci\'on \'unica.
+        \item \textit{solvenumber} b\'asicamente es el controlador que recibe el tablero, recopila informaci\'on necesaria y luego ejecuta \textit{giveNumber}.
+        \item \textit{changeState} recibe un entero, posici\'on de columna y de fila y el tablero actual y devuelve una nueva matriz ([[a]]) con el entero ubicado en la posici\'on recibida.
+        \item \textit{correctlyPlaced} recibiendo un valor x que ya se encuentra ubicado en el tablero y la posici\'on del antecesor a este brindar\'a True si est\'an adyacentes y False de lo contrario.
+        \item \textit{giveNumber}  recibe un entero, el m\'aximo del tablero, posici\'on de la columna y fila del antecesor, una lista de números que ya se encuentran fijados, el tablero y su mask, devolviendo finalmente un entero que representar\'a el n\'umero de soluciones que tiene el tablero actual. Itera por cada n\'umero, solo se detiene si llega al número m\'aximo del tablero, de lo contrario llama a \textit{validPlace} con cada una de las posibles ubicaciones adyacentes a el antecesor. Funciona recursivamente sumando el n\'umero de soluciones factibles generadas al ubicar un n\'umero adyacente a su antecesor en las m\'ultiples posibilidades.
+		\item \textit{validPlace} recibir\'a un entero x, el m\'aximo del tablero, la posici\'on donde se desea ubicar a x, la lista de fijados, el tablero y su mask. Se encarga de comprobar si la posici\'on dada es v\'alida seg\'un la m\'ascara por medio de \textit{notValidMask} y si la posici\'on no se encuentra ya ocupada en el tablero con \textit{notValidHidato}. Si cumple todos los requisitos entonces se hace un llamado a \textit{giveNumber} con el sucesor y el tablero actualizado con el n\'umero ya ubicado. Lo anterior asegura un ciclo continuo hasta que se haya recorrido cada n\'umero.
+		\item \textit{notValidMask} y \textit{notValidHidato} fueron descritas un poco anteriormente pero a mayor profundidad: ambos reciben fila y columna, lo cual constituye la posici\'on que se desea comprobar, adem\'as reciben la mask y el hidato respectivamente. Proceden a comprobar si la posici\'on es v\'alida, devolviendo True si no lo es y False de lo contrario.
+    \end{itemize}
+	 
+    Algunas funciones de las anteriores utilizan otros m\'etodos para hacer m\'as coherente y sencillo el funcionamiento. Ejemplo \textit{changeState} utiliza \textit{changeRow} el cual de manera muy descriptiva cambia la fila ubicando un nuevo n\'umero en cierta columna, los m\'etodos \textit{notValidMask} y \textit{notValidHidato} utilizan \textit{checkMask} y \textit{checkHidato} respectivamente para iterar por las filas del tablero y luego una vez encontrada la fila deseada, hacer un llamado de \textit{checkColumn} y \textit{distintZero} respectivamente para encontrar la columna del tablero y as\'i obetener el resultado deseado.
+	 
+    Adem\'as se utilizan \'utiles como \textit{searchNumber} que localiza un n\'umero dado en el tablero recibido, devolviendo su posici\'on, \textit{searchTop} que dado un tablero devuelve el número m\'aximo que se encuentra ubicado en este, \textit{getRows} y \textit{getColumns} que dada una matriz brinda el n\'umero de filas y columnas respectivamente que esta tiene, \textit{searchUbicated} recibiendo un tablero retorna una lista de enteros que se encuentran ubicados en esta, \textit{biggerThanOne} recibe una fila con enteros y devuelve una lista con los que son mayores que 1 y otros subm\'etodos auxiliares que realizan puequeñas tareas pero contribuyen al funionamiento de el generador.
+	 
+    \section*{¿C\'omo se soluciona el tablero?}
+	 
+    \subsection*{Acercamiento general}
+	
+    Recibiendo un tablero con valores fijados, el 1 y el m\'aximo entre ellos, y la m\'ascara correspondiente a dicho sudoku, el m\'etodo solve se encarga de darle soluci\'on. Similar al generador esta funci\'on itera desde 2 al m\'aximo pero en este caso se analiza que ocurre si se ubica el n\'umero en cada posici\'on adyacente a su antecesor, comprobando siempre que sea v\'alida, y luego se avanza a comprobar el sucesor.
+	 
+    \subsection*{M\'etodos y estrategias}
+	
+    El iterador solo se detendr\'a cuando se compruebe que el antecesor al m\'aximo se encuentra bien ubicado, una vez haya ocurrido esto significa que tenemos la soluci\'on, de lo contrario se continua comprobando el resto de posiblidades.
+	   
+    Se utiliza la funci\'on \textit{ubica}, que es la encargada de iterar por todos los n\'umeros y analizar que ocurre si este se fija en cada posici\'on v\'alida adyacente al antecesor por medio de la funci\'on \textit{validPlace}. Si se realiza un an\'alisis cuidadoso es un m\'etodo muy similar a \textit{giveNumber}, con la diferencia que \textit{ubica}, por conveniencia lo que retorna es un booleano y la matriz solucionada y no un entero con el n\'umero de soluciones. Se utiliza en el resultado ese primer parámetro booleano para en cada llamado recursivo recibir si se encontró solución de ser True y False de lo contrario.	
+   
+   \begin{itemize}
+	 \item \textit{ubica} como se decribi\'o superficialemente, recibir\'a un entero x, la posici\'on de su antecesor, el m\'aximo del tablero, la lista de los valores ubicados inicialmente, el sudoku sin resolver y su mask. Este de manera recursiva utilizando \textit{validPlace} al igual que \textit{giveNumber}, con la pequeña diferencia que este devuelve la dupla de Bool-tablero, iterar\'a por cada n\'umero hasta el m\'aximo ubicando x de manera adyacente a su antecesor y procediendo a comprobar el sucesor. Lo anterior procede ubicando siempre en una posici\'on v\'alida, ya descrita en el generador. 	
+    \end{itemize}
+    
+     El solucionador utiliza al igual que el generador funciones como \textit{changeState}, \textit{correctlyPlaced}, \textit{searchTop}, \textit{searchNumber}, \textit{getRows}, \textit{getColumns}, \textit{notValidMask}, \textit{notValidHidato} y muchos otros con exactamente la misma finalidad. 
+	
+ 
+    \section*{Generator}
+
+    En esta secci\'on abordaremos los aspetos m\'as importantes para generar un hidato v\'alido a partir de un template dado. De manera general, lo primero que se necesita es generar la posici\'on de inicio del sudoku. Esta selecci\'on de una casilla inicial en el tablero se hace de manera aleatoria, haciendo uso del paquete \textit{random} encontrado en m\'odulo \textit{System.Random}. Luego, se comienza en este punto la b\'usqueda de un camino de Hamilton en la matriz. Si la b\'usqueda no fue exitosa, se repite el mismo proceso. 
+
+    \subsection*{searchHamiltonianPath:} Esta funci\'on recibe un hidato, una posici\'on en dicho hidato, una direcci\'on y el tama\~no del camino que se tiene hasta el momento. Esta funci\'on es un algoritmo de Backtrack cl\'asico, que avanza mientras queden casillas libres en el hidato y la nueva posici\'on a la que se mueve es v\'alida. Las direcciones hacia donde se mueven se controlan mediante un tipo definido llamado \textit{Direction}, y las funciones \textit{directionToRow} y \textit{directionToCol} que dada una direcci\'on devuelven el sumando que permite trasladarse en esa direcci\'on. 
+
+    Es importante se\~nalar que este algoritmo es capaz de resolver un tablero de hidato, y para esto, se a\~nade la comprobaci\'on antes de trasladarse que si algun vecino de la casilla actual es la pr\'oxima casilla del camino que se esta formando, entonces se traslada hacia esta posici\'on y se continua el algoritmo.
+                 
+    \subsection*{Direction:} este es un tipo que se define con el objetivo de modelar un array de direcciones. Junto con ese tipo vienen implementados dos funciones \textit{directionToRow} y \textit{directionToCol}, las cuales retornan dada una direcci\'on el sumando que se necesita sumar a la posici\'on actual para ser desplazado en dicha direcci\'on.
+
+    \subsection*{Hidato:} este tipo se define para almacenar la informaci\'on referente a un Hidato Sudoku. Entre sus propiedades se tiene una matriz de n\'umeros que representa el tablero (\textit{matrix :: [[Int]]}), una m\'ascara booleana que marca en \textit{False} las casillas que tienen obst\'aculos (\textit{mask :: [[Bool]]}), un entero para tener la cantidad de casillas libres, y otros dos enteros que representan las dimensiones del tablero. 
+
+    El tipo Hidato representa una instancia de la clase de tipos \textit{Show}, y por tanto se redefine la funci\'on \textbf{show} con el objetivo de poder mostrar con facilidad un hidato.
+		
+    \subsection*{isValidPosition:} esta funci\'on define un criterio para decidir si una casilla del hidato es v\'alida. Se dice que una casilla es v\'alida si est\'a comprendida en los l\'imites de la matriz, no es un obstaculo y la posici\'on es igual a 0 (o sea, no ha sido visitada), o es igual a el tama\~no de paso menos uno, que significa que ser\'a la pr\'oxima casilla por visitar en el camino que se esta construyendo. 
+        
+    \subsection*{replaceHidato:} esta funci\'on recibe un hidato, una posici\'on y un valor, y devuelve otro hidato con este valor insertado en dicha posici\'on. Para la construcci\'on del hidato resultante se hace uso de la funci\'on auxiliar \textit{replaceMatrix}
+
+    \subsection*{replaceMatrix:} esta funci\'on recibe una lista de listas gen\'erica ([[a]]), una posici\'on y un valor gen\'erico tambi\'en. Esta funci\'on hace uso de una func\'ion auxiliar \textit{replace} la cual reemplaza un valor en una lista ([a]), junto con la estructura \textbf{let - in} primero remplazando el valor en la fila correspondiente, y luego haciendo uso de la misma funci\'on \textit{replace} se reemplaza ahora la fila completa en la matriz.     
+    
+\end{document}
