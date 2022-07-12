@@ -34,6 +34,8 @@ library
       Generator.Random
       Solver.Main
       Solver.Solve
+      Template.Main
+      Template.Utils
   other-modules:
       Paths_hidato_sudoku
   hs-source-dirs:

@@ -2,6 +2,7 @@ module Solver.Main(solveTemplate, ShowHidatos) where
 
 import Data.List.Split
 import Common.Hidato 
+import Template.Utils
 import Generator.Generate
 import Solver.Solve
 
@@ -15,19 +16,8 @@ instance Show ShowHidatos where
 solveTemplate :: String -> FilePath -> IO ShowHidatos
 solveTemplate templateName rootPath = do
     
-    template <- readFile (rootPath ++ "/templates/" ++ templateName ++ ".txt")
-    
-    let rows = splitOn "\n" template
-        colums = map (splitOn " ") rows
-        mask' = map (map (/= "X")) colums
-        (freeCells', amountRows', amountCols') = amountEq mask'
-        hidato' = Hidato {
-            matrix = replicate amountRows' $ replicate amountCols' 0,
-            mask = mask',
-            freeCells = freeCells',
-            amountRows = amountRows',
-            amountCols = amountCols'
-        }
+    hidato' <- loadTemplate templateName (rootPath ++ "/templates/")
+
     generatedHidato <- generateHidato hidato'
 
     let matrixGeneratedHidato = matrix generatedHidato
@@ -35,10 +25,10 @@ solveTemplate templateName rootPath = do
         solvedHidato' = solve matrixGeneratedHidato maskGeneratedHidato 
         hidato = Hidato {
             matrix = solvedHidato',
-            mask = mask',
-            freeCells = freeCells',
-            amountRows = amountRows',
-            amountCols = amountCols'
+            mask = mask hidato,
+            freeCells = freeCells hidato,
+            amountRows = amountRows hidato,
+            amountCols = amountCols hidato
         }
         showHidatos = ShowHidatos {
             generatedHidato = generatedHidato,
@@ -46,21 +36,3 @@ solveTemplate templateName rootPath = do
         }
 
     return showHidatos
-
-
-amountEq :: [[Bool]] -> (Int, Int, Int)
-amountEq = foldr (
-        \row (freeCells, rows, cols) -> 
-        let (freeCells', amountCols) = foldr (
-                \cell (freeCells'',cols) -> 
-                    if cell then (freeCells''+1,cols+1) else (freeCells'',cols+1)
-                ) (0,0) row 
-        in 
-            if amountCols == cols && rows /= 0
-                then (freeCells + freeCells', rows + 1, cols)
-            else if rows == 0
-                then (freeCells', 1, amountCols)
-            else
-                (-1,-1,-1)
-    ) (0,0,0)
-

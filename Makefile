@@ -2,7 +2,7 @@
 .PHONY: run
 
 run:
-	stack ghci src/Solver/Main.hs
+	stack ghci app/Main.hs
 
 .PHONY: build
 
