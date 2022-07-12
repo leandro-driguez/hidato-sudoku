@@ -18,13 +18,24 @@ main = do
     
     let prompt = Prompt { addr = rootPath }
 
-    print "Enter the name of the template: "
+    putStrLn "Enter the solve command and, after a blank space, the template name"
 
 
-    template <- getLine
-    solve <- solveTemplate template rootPath
-    print solve
+    command <- getLine
+    if  equalCommand command "solve " 
+        then do let template = getTemplate command "solve"
+                solution <- solveTemplate template rootPath
+                print solution
+        else main
 
+equalCommand :: String -> String -> Bool
+equalCommand _ [] = True
+equalCommand (x:xs) (y:ys) | x == y = equalCommand xs ys
+                           | otherwise = False
+
+getTemplate :: String -> String -> String
+getTemplate (x:xs) [] = xs 
+getTemplate (x:xs) (_:ys) = getTemplate xs ys
 
 
 -- main = do
