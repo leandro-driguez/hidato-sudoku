@@ -1,3 +1,4 @@
+
 # Generador y solucionador de Hidatos
 
 ## Ejecución
@@ -7,8 +8,8 @@ Para la ejecución del software debe ejecutar los siguientes comandos: `make run
 ```sh
 your_shell \$ make run
 stack ghci app/Main.hs
-Using configuration for hidato-sudoku:exe:hidato-sudoku-exe to load /home/leandro/Study/3rd_Year/1st_semester/Declarative_Programming/Haskell/hidato-sudoku/app/Main.hs
-Using main module: 1. Package `hidato-sudoku' component hidato-sudoku:exe:hidato-sudoku-exe with main-is file: /home/leandro/Study/3rd_Year/1st_semester/Declarative_Programming/Haskell/hidato-sudoku/app/Main.hs
+Using configuration for hidato-sudoku:exe:hidato-sudoku-exe to load /home/leandro/Study/> > 3rd_Year/1st_semester/Declarative_Programming/Haskell/hidato-sudoku/app/Main.hs
+Using main module: 1. Package `hidato-sudoku` component hidato-sudoku:exe:hidato-sudoku-exe with main-is file: /home/leandro/Study/3rd_Year/1st_semester/Declarative_Programming/Haskell/hidato-sudoku/app/Main.hs
 hidato-sudoku> initial-build-steps (lib + exe)
 The following GHC options are incompatible with GHCi and have not been passed to it: -threaded
 Configuring GHCi with the following packages: hidato-sudoku
